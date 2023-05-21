@@ -6,6 +6,11 @@ namespace BaseInfrastructure
     {
         private bool _disposed;
 
+        public virtual void Construct()
+        {
+            
+        }
+        
         public void OnDestroy()
         {
             if (_disposed) return;

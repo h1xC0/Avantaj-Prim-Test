@@ -1,9 +1,10 @@
 using System;
 using UniRx;
+using UnityEngine;
 
 namespace BaseInfrastructure
 {
-    public class BasePresenter<TViewContract> : IDisposable where TViewContract : IBaseView
+    public class BasePresenter<TViewContract> : IDisposable where TViewContract : IView
     {
         protected readonly TViewContract View;
         protected readonly CompositeDisposable CompositeDisposable;
@@ -13,7 +14,7 @@ namespace BaseInfrastructure
             View = viewContract;
             CompositeDisposable = new CompositeDisposable();
             
-            View.Initialize();
+            View.Construct();
         }
 
         public void AddDisposable(IDisposable disposable)

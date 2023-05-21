@@ -42,7 +42,7 @@ namespace Systems.CommandSystem
             }
         }
 
-        private bool HasListener(Type type)
+        public bool HasListener(Type type)
         {
             return _signals.ContainsKey(type);
         }
