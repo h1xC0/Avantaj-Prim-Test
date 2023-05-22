@@ -23,7 +23,7 @@ namespace MainComponents.DraggableItems
         private Image _image;
         private RectTransform _transform;
         private Transform _parent;
-        private Vector3 _cashedPosition;
+        private Vector3 _cachedPosition;
 
         private IAnimationService _animationService;
         
@@ -35,7 +35,7 @@ namespace MainComponents.DraggableItems
             _image = GetComponent<Image>();
             _transform = GetComponent<RectTransform>();
             _parent = _transform.parent;
-            _cashedPosition = _transform.localPosition;
+            _cachedPosition = _transform.localPosition;
         }
 
         public void SetSprite(Sprite sprite)
@@ -80,7 +80,8 @@ namespace MainComponents.DraggableItems
 
         private void ReturnBack()
         {
-            _transform.localPosition = _cashedPosition;
+            SetParent(_parent);
+            _transform.localPosition = _cachedPosition;
         }
 
         private void ChangePosition(Vector2 position)

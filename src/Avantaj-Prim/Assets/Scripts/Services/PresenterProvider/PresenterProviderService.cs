@@ -10,11 +10,6 @@ namespace Services.PresenterProvider
             private set;
         }
 
-        public PresenterProviderService(GameplayPresenter gameplayPresenter)
-        {
-            GameplayPresenter = gameplayPresenter;
-        }
-
         public void BindGameplayPresenter(GameplayPresenter gameplayPresenter) 
             => GameplayPresenter = gameplayPresenter;
 

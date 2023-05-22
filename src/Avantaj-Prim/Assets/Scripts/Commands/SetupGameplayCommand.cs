@@ -27,7 +27,7 @@ namespace Commands
             
              
             var gamePlayView = container.InstantiatePrefabForComponent<IGameplayView>(setupGameplayPayload.GameplayView, setupGameplayPayload.SpawnPoint);
-            _presenterProviderService.BindGameplayPresenter(container.Instantiate<GameplayPresenter>(new[] {gamePlayView}));
+            _presenterProviderService.BindGameplayPresenter(container.Instantiate<GameplayPresenter>(new object[] {gamePlayView, setupGameplayPayload.Canvas}));
 
             _presenterProviderService.GameplayPresenter.ConstructGameplay(_levelConfigurationService.GetLevelConfiguration(1));
             

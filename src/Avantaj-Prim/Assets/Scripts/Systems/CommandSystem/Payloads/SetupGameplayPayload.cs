@@ -10,17 +10,21 @@ namespace Systems.CommandSystem.Payloads
         public ISceneTransitionService SceneTransitionService;
 
         public GameplayView GameplayView;
+        
         // public WinLoseView WinLoseView;
         // public HudView HudView;
+        
         public DiContainer Container;
         public Transform SpawnPoint;
+        public Canvas Canvas;
 
-        public SetupGameplayPayload(GameplayView gameplayView, ISceneTransitionService sceneTransitionService, Transform spawnPoint, DiContainer container)
+        public SetupGameplayPayload(GameplayView gameplayView, ISceneTransitionService sceneTransitionService, Transform spawnPoint, Canvas canvas, DiContainer container)
         {
             GameplayView = gameplayView;
             SceneTransitionService = sceneTransitionService;
             Container = container;
             SpawnPoint = spawnPoint;
+            Canvas = canvas;
         }
     }
 }
