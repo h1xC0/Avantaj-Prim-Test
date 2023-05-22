@@ -1,16 +1,11 @@
 using Commands;
-using Constants;
-using GameState;
-using MainComponents.Gameplay;
-using Services;
 using Services.AnimationService;
-using Services.EventBus;
 using Services.InputService;
+using Services.LevelConfigurationService;
+using Services.PlayerProgression;
 using Services.PresenterProvider;
 using Signals;
 using Systems.CommandSystem;
-using Systems.CommandSystem.Payloads;
-using UnityEngine;
 
 namespace Installers
 {
@@ -46,20 +41,23 @@ namespace Installers
 
         protected override void InstallServices()
         {
-            Container.BindInterfacesTo<InputService>()
+            Container
+                .BindInterfacesTo<InputService>()
                 .FromNew()
                 .AsSingle();
 
-            Container.BindInterfacesTo<AnimationService>()
+            Container
+                .BindInterfacesTo<AnimationService>()
                 .FromNew()
                 .AsSingle();
 
-            Container.BindInterfacesTo<ViewManagementFactory>()
+            Container
+                .BindInterfacesTo<PresenterProviderService>()
                 .FromNew()
-                .AsSingle()
-                .NonLazy();
+                .AsSingle();
 
-            Container.BindInterfacesTo<PresenterProviderService>()
+            Container
+                .BindInterfacesTo<PlayerProgressionService>()
                 .FromNew()
                 .AsSingle();
         }

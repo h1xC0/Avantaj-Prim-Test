@@ -39,5 +39,38 @@ namespace Services.AnimationService
 
             return sequence;
         }
+        
+        public Sequence SetupEnterAnimation(Transform target, float animationPositionOffset, float animationSpeed)
+        {
+            var sequence = DOTween.Sequence(target);
+            sequence.SetTarget(target);
+            sequence.SetAutoKill();
+
+            var endPosition = target.localPosition;
+            endPosition.y += animationPositionOffset;
+            target.localPosition = endPosition;
+
+            sequence.Append(target.DOLocalMoveY(-animationPositionOffset, animationSpeed));
+
+            return sequence;
+        }
+
+        public Sequence SetupFloatingAnimation(Transform target, float amplitude, float frequency)
+        {
+            var sequence = DOTween.Sequence(target);
+            var animationPositionOffset = target.position; 
+            sequence.SetTarget(target);
+            sequence.SetAutoKill();
+            sequence.SetEase(Ease.InOutSine);
+            
+            // var tempPos = posOffset;
+            sequence.Append(target.DOMoveY(target.transform.localPosition.y + amplitude, frequency));
+            sequence.Append(target.DOMoveY(animationPositionOffset.y, frequency));
+
+
+            return sequence;
+            // tempPos.y += Mathf.Sin(Time.fixedTime * Mathf.PI * frequency) * amplitude;
+            // target.position = tempPos;
+        }
     }
 }

@@ -1,10 +1,14 @@
 using BaseInfrastructure;
 using MainComponents.DraggableItems;
-using MainComponents.Gameplay.TrashBin;
+using MainComponents.Gifts;
+using MainComponents.Gifts.TrashBin;
 using MainComponents.Level;
 using Services.AnimationService;
 using Services.InputService;
+using Services.LevelConfigurationService;
+using Services.PlayerProgression;
 using Services.ResourceProvider;
+using UnityEngine;
 
 namespace MainComponents.Gameplay
 {
@@ -13,26 +17,40 @@ namespace MainComponents.Gameplay
         private readonly IInputService _inputService;
         private readonly IResourceProviderService _resourceProviderService;
         private readonly IAnimationService _animationService;
+        private readonly ILevelConfigurationService _levelConfigurationService;
+        private readonly IPlayerProgressionService _playerProgressionService;
+
+        private Canvas _mainCanvas;
 
         public GameplayPresenter(
             IGameplayView viewContract,
             IInputService inputService,
-            IResourceProviderService resourceProviderService, IAnimationService animationService) 
-            : base(viewContract)
+            IResourceProviderService resourceProviderService,
+            IAnimationService animationService,
+            ILevelConfigurationService levelConfigurationService,
+            IPlayerProgressionService playerProgressionService,
+            Canvas canvas) : base(viewContract)
         {
             _inputService = inputService;
             _resourceProviderService = resourceProviderService;
             _animationService = animationService;
+            _levelConfigurationService = levelConfigurationService;
+            _playerProgressionService = playerProgressionService;
+
+            _mainCanvas = canvas;
         }
 
         public void ConstructGameplay(LevelConfiguration levelConfiguration)
         {
+            View.Construct(_mainCanvas);
             View.Hide();
 
             ConstructBoxVariants(levelConfiguration);
             ConstructBowVariants(levelConfiguration);
             ConstructsOrnamentVariants(levelConfiguration);
+            ConstructGiftSlots();
             ConstructTrashBin();
+            
             
             View.Show();
         }
@@ -48,7 +66,7 @@ namespace MainComponents.Gameplay
                 var giftPart = levelConfiguration.AvailableOrnaments[i];
                 var view = View.DesignContainers[i];
 
-                AddDisposable(new DraggableItemContainerPresenter(view, _inputService, _resourceProviderService, View.Canvas, giftPart, _animationService));
+                AddDisposable(new DraggableItemContainerPresenter(view, _inputService, _resourceProviderService, _mainCanvas, giftPart, _animationService));
             }
         }
 
@@ -60,7 +78,7 @@ namespace MainComponents.Gameplay
                 var giftPart = levelConfiguration.AvailableBows[i];
                 var view = View.BowContainers[i];
 
-                AddDisposable(new DraggableItemContainerPresenter(view, _inputService, _resourceProviderService,  View.Canvas, giftPart, _animationService));
+                AddDisposable(new DraggableItemContainerPresenter(view, _inputService, _resourceProviderService,  _mainCanvas, giftPart, _animationService));
             }
         }
 
@@ -72,7 +90,20 @@ namespace MainComponents.Gameplay
                 var giftPart = levelConfiguration.AvailableBoxes[i];
                 var view = View.BoxContainers[i];
 
-                AddDisposable(new DraggableItemContainerPresenter(view, _inputService, _resourceProviderService, View.Canvas, giftPart, _animationService));
+                AddDisposable(new DraggableItemContainerPresenter(view, _inputService, _resourceProviderService, _mainCanvas, giftPart, _animationService));
+            }
+        }
+        
+        private void ConstructGiftSlots()
+        {
+            for (int i = 0; i < _levelConfigurationService.GiftSlots.Length; i++)
+            {
+                if (i >= View.GiftSlots.Length) break;
+                var view = View.GiftSlots[i];
+                var giftSlotConfig = _levelConfigurationService.GiftSlots[i];
+                
+                AddDisposable(new GiftSlotPresenter(view, _levelConfigurationService.GiftRecipes, 
+                    _inputService, _playerProgressionService,_animationService,_resourceProviderService, giftSlotConfig, _mainCanvas));
             }
         }
     }

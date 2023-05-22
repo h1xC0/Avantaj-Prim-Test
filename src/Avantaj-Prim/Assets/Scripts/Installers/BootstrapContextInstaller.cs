@@ -2,7 +2,10 @@ using Commands;
 using Constants;
 using Services;
 using Services.EventBus;
+using Services.LevelConfigurationService;
+using Services.PlayerProgression;
 using Services.ResourceProvider;
+using Services.SaveLoad;
 using Services.Transitions;
 using Signals;
 using Systems.CommandSystem;
@@ -31,29 +34,40 @@ namespace Installers
 
         private void BindServices()
         {
-            Container.BindInterfacesTo<ResourceProviderService>()
+            Container
+                .BindInterfacesTo<ResourceProviderService>()
                 .FromNew()
                 .AsSingle();
 
-            Container.BindInterfacesTo<EventBusService>()
+            Container
+                .BindInterfacesTo<EventBusService>()
                 .FromNew()
                 .AsSingle();
 
-            Container.BindInterfacesTo<CommandBinder>()
+            Container
+                .BindInterfacesTo<CommandBinder>()
                 .FromNew()
                 .AsSingle()
                 .CopyIntoAllSubContainers();
 
-            Container.BindInterfacesTo<CommandDispatcher>()
+            Container
+                .BindInterfacesTo<CommandDispatcher>()
                 .FromNew()
                 .AsSingle();
             
-            Container.BindInterfacesTo<SceneTransitionService>()
+            Container
+                .BindInterfacesTo<SceneTransitionService>()
                 .FromInstance(sceneTransitionService)
                 .AsSingle()
                 .NonLazy();
 
-            Container.BindInterfacesTo<LevelConfigurationService>()
+            Container
+                .BindInterfacesTo<SaveLoadService>()
+                .FromNew()
+                .AsSingle();
+            
+            Container
+                .BindInterfacesTo<LevelConfigurationService>()
                 .FromNew()
                 .AsSingle();
         }

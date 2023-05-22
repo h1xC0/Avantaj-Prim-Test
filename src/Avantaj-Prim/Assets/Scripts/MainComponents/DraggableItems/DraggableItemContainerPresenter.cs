@@ -2,6 +2,7 @@ using System;
 using BaseInfrastructure;
 using Constants;
 using MainComponents.Gifts;
+using MainComponents.Gifts.Models;
 using Services.AnimationService;
 using Services.InputService;
 using Services.ResourceProvider;

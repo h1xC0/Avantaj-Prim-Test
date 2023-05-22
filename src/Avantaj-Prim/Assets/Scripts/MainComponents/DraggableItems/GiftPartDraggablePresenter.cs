@@ -1,5 +1,6 @@
 using System;
 using MainComponents.Gifts;
+using MainComponents.Gifts.Models;
 using Services;
 using Services.AnimationService;
 using Services.InputService;

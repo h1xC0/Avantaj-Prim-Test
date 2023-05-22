@@ -11,12 +11,13 @@ namespace MainComponents.Gameplay
     {
         [SerializeField] private GameplayView gameplayView;
         [SerializeField] private Transform viewSpawnPoint;
+        [SerializeField] private Canvas _canvas;
 
         [Inject]
         public void Construct(ICommandDispatcher commandDispatcher,
             ISceneTransitionService sceneTransitionService, DiContainer container)
         {
-            commandDispatcher.Dispatch<SetupGameplaySignal>(new SetupGameplayPayload(gameplayView, sceneTransitionService, viewSpawnPoint, container));
+            commandDispatcher.Dispatch<SetupGameplaySignal>(new SetupGameplayPayload(gameplayView, sceneTransitionService, viewSpawnPoint, _canvas, container));
         }
 
         public void Dispose()

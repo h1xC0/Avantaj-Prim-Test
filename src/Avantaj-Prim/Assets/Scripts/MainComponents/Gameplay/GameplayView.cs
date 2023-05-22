@@ -1,22 +1,21 @@
 using BaseInfrastructure;
-using MainComponents.Crafting;
 using MainComponents.DraggableItems;
-using MainComponents.Gameplay.TrashBin;
+using MainComponents.Gifts;
+using MainComponents.Gifts.TrashBin;
 using UnityEngine;
 
 namespace MainComponents.Gameplay
 {
     public class GameplayView : BaseView, IGameplayView
     {
-        public CraftingSlotView[] CraftingSlots => _craftingSlots;
+        public GiftSlotView[] GiftSlots => _craftingSlots;
         public DraggableItemContainerView[] DesignContainers => _ornamentContainers;
         public DraggableItemContainerView[] BoxContainers => _boxContainers;
         public DraggableItemContainerView[] BowContainers => _bowContainers;
         public TrashBinView TrashBinView => trashBinView;
-        public Canvas Canvas => _canvas;
 
         [Header("Gift Crafting")]
-        [SerializeField] private CraftingSlotView[] _craftingSlots;
+        [SerializeField] private GiftSlotView[] _craftingSlots;
         [SerializeField] private DraggableItemContainerView[] _boxContainers;
         [SerializeField] private DraggableItemContainerView[] _bowContainers;
         [SerializeField] private DraggableItemContainerView[] _ornamentContainers;
@@ -25,9 +24,9 @@ namespace MainComponents.Gameplay
 
         private Canvas _canvas;
 
-        public override void Construct()
+        public void Construct(Canvas canvas)
         {
-            _canvas = GetComponent<Canvas>();
+            _canvas = canvas;
         }
 
         public void Show()

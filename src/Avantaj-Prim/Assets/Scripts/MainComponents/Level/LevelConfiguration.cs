@@ -1,4 +1,5 @@
 using MainComponents.Gifts;
+using MainComponents.Gifts.Models;
 using Services.ResourceProvider;
 using UnityEngine;
 

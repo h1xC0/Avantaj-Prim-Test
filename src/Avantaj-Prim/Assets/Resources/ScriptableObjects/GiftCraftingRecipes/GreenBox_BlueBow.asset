@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfd93b108d1429ba62b8f2bca1a95af, type: 3}
+  m_Name: GreenBox_BlueBow
+  m_EditorClassIdentifier: 
+  GiftParts:
+  - {fileID: 11400000, guid: 03c56920204d4844cb3da58084a9693f, type: 2}
+  - {fileID: 11400000, guid: 09b16883e2f97c7489ffacdf077f5fa6, type: 2}
+  Result: {fileID: 21300000, guid: d9bc26d065ef0d049bc5f7f554cbc7b0, type: 3}

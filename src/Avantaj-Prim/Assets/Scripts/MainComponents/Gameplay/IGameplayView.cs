@@ -1,20 +1,20 @@
 using BaseInfrastructure;
-using MainComponents.Crafting;
 using MainComponents.DraggableItems;
-using MainComponents.Gameplay.TrashBin;
+using MainComponents.Gifts;
+using MainComponents.Gifts.TrashBin;
 using UnityEngine;
 
 namespace MainComponents.Gameplay
 {
     public interface IGameplayView : IView
     {
-        CraftingSlotView[] CraftingSlots { get; }
+        GiftSlotView[] GiftSlots { get; }
         DraggableItemContainerView[] BoxContainers { get; }
         DraggableItemContainerView[] BowContainers { get; }
         DraggableItemContainerView[] DesignContainers { get; }
         TrashBinView TrashBinView { get; }
-        
-        Canvas Canvas { get; }
+
+        void Construct(Canvas canvas);
         void Show();
         void Hide();
     }
