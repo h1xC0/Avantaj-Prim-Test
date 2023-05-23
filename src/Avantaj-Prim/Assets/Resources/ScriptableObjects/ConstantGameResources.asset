@@ -12,6 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c63a54c303a747cfb708a14e8a2e8517, type: 3}
   m_Name: ConstantGameResources
   m_EditorClassIdentifier: 
-  SlotSprites:
+  slotSprites:
     openSlotSprite: {fileID: 21300000, guid: fe352f2a7bf13944cb08e489f7d8c415, type: 3}
     closedSlotSprite: {fileID: 21300000, guid: d8be0d52f1221584ca9bdabaf16f8305, type: 3}
+  customerSpritesList:
+  - satisfiedCustomer: {fileID: 21300000, guid: 8d363fe406db3b14f9240315fe2eac90, type: 3}
+    unsatisfiedCustomer: {fileID: 21300000, guid: 78ab98abc995d144f8a444e1bef5cc11, type: 3}
+  - satisfiedCustomer: {fileID: 21300000, guid: cbd72e0cad60e5643a8bea2b74de6625, type: 3}
+    unsatisfiedCustomer: {fileID: 21300000, guid: 66eb5d65c70a9894ea1bdd26cd0c2a7a, type: 3}
+  - satisfiedCustomer: {fileID: 21300000, guid: d265c4838d05e2146907f01ba51f5cae, type: 3}
+    unsatisfiedCustomer: {fileID: 21300000, guid: aee1972a91a089d40bb48ba43f04f7f3, type: 3}
+  - satisfiedCustomer: {fileID: 21300000, guid: 21cc04694b824e84fb70161ca6af5189, type: 3}
+    unsatisfiedCustomer: {fileID: 21300000, guid: 7f12ec34cfc4b424686a50dede78f4eb, type: 3}

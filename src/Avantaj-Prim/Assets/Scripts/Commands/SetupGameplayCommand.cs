@@ -1,8 +1,11 @@
+using BaseInfrastructure;
+using GameState;
 using MainComponents.Gameplay;
-using Services;
+using MainComponents.GameplayUI;
 using Services.LevelConfigurationService;
 using Services.PlayerProgression;
 using Services.PresenterProvider;
+using Services.Transitions;
 using Systems.CommandSystem;
 using Systems.CommandSystem.Payloads;
 
@@ -10,13 +13,15 @@ namespace Commands
 {
     public class SetupGameplayCommand : Command
     {
-        private readonly IPresenterProviderService _presenterProviderService;
+        private readonly IPresenterContainerService _presenterContainerService;
+        private readonly ISceneTransitionService _sceneTransitionService;
         private readonly ILevelConfigurationService _levelConfigurationService;
         private readonly IPlayerProgressionService _playerProgressionService;
 
-        public SetupGameplayCommand(IPresenterProviderService presenterProviderService, ILevelConfigurationService levelConfigurationService, IPlayerProgressionService playerProgressionService)
+        public SetupGameplayCommand(IPresenterContainerService presenterContainerService, ISceneTransitionService sceneTransitionService, ILevelConfigurationService levelConfigurationService, IPlayerProgressionService playerProgressionService)
         {
-            _presenterProviderService = presenterProviderService;
+            _presenterContainerService = presenterContainerService;
+            _sceneTransitionService = sceneTransitionService;
             _levelConfigurationService = levelConfigurationService;
             _playerProgressionService = playerProgressionService;
         }
@@ -29,11 +34,22 @@ namespace Commands
             
              
             var gamePlayView = container.InstantiatePrefabForComponent<IGameplayView>(setupGameplayPayload.GameplayView, setupGameplayPayload.SpawnPoint);
-            _presenterProviderService.BindGameplayPresenter(container.Instantiate<GameplayPresenter>(new object[] {gamePlayView, setupGameplayPayload.Canvas}));
-
-            _presenterProviderService.GameplayPresenter.ConstructGameplay(_levelConfigurationService.GetLevelConfiguration(_playerProgressionService.CurrentLevel.Value));
+            var levelStateView = container.InstantiatePrefabForComponent<ILevelStateView>(setupGameplayPayload.LevelStateView, setupGameplayPayload.SpawnPoint);
+            var levelDataView = container.InstantiatePrefabForComponent<ILevelDataView>(setupGameplayPayload.LevelDataView, setupGameplayPayload.SpawnPoint);
             
-            setupGameplayPayload.SceneTransitionService.FadeOut();
+            var gameplayPresenter = container.Instantiate<GameplayPresenter>(new object[] { gamePlayView, setupGameplayPayload.Canvas});
+            var levelStatePresenter = container.Instantiate<LevelStatePresenter>(new object[] { levelStateView });
+            var levelDataPresenter = container.Instantiate<LevelDataPresenter>(new object[] { levelDataView });
+            
+            _presenterContainerService.BindPresenter(gameplayPresenter);
+            _presenterContainerService.BindPresenter(levelStatePresenter);
+            _presenterContainerService.BindPresenter(levelDataPresenter);
+
+            _presenterContainerService.Resolve<GameplayPresenter>().ConstructGameplay(_levelConfigurationService.GetLevelConfiguration(_playerProgressionService.CurrentLevel.Value));
+            
+            _presenterContainerService.Resolve<LevelDataPresenter>().Construct();
+
+            _sceneTransitionService.FadeOut();
             
             Release();
         }

@@ -1,5 +1,6 @@
+using GameState;
 using MainComponents.Gameplay;
-using Services.Transitions;
+using MainComponents.GameplayUI;
 using UnityEngine;
 using Zenject;
 
@@ -7,21 +8,19 @@ namespace Systems.CommandSystem.Payloads
 {
     public class SetupGameplayPayload : ICommandPayload
     {
-        public ISceneTransitionService SceneTransitionService;
-
         public GameplayView GameplayView;
-        
-        // public WinLoseView WinLoseView;
-        // public HudView HudView;
+        public LevelStateView LevelStateView;
+        public LevelDataView LevelDataView;
         
         public DiContainer Container;
         public Transform SpawnPoint;
         public Canvas Canvas;
 
-        public SetupGameplayPayload(GameplayView gameplayView, ISceneTransitionService sceneTransitionService, Transform spawnPoint, Canvas canvas, DiContainer container)
+        public SetupGameplayPayload(GameplayView gameplayView, LevelStateView levelStateView, LevelDataView levelDataView, Transform spawnPoint, Canvas canvas, DiContainer container)
         {
             GameplayView = gameplayView;
-            SceneTransitionService = sceneTransitionService;
+            LevelStateView = levelStateView;
+            LevelDataView = levelDataView;
             Container = container;
             SpawnPoint = spawnPoint;
             Canvas = canvas;

@@ -1,3 +1,4 @@
+using Constants;
 using DG.Tweening;
 using UnityEngine;
 
@@ -55,22 +56,54 @@ namespace Services.AnimationService
             return sequence;
         }
 
-        public Sequence SetupFloatingAnimation(Transform target, float amplitude, float frequency)
+        public Sequence SetupFloatingAnimation(Transform target, float amplitude, float duration)
         {
             var sequence = DOTween.Sequence(target);
             var animationPositionOffset = target.position; 
             sequence.SetTarget(target);
             sequence.SetAutoKill();
-            sequence.SetEase(Ease.InOutSine);
             
-            // var tempPos = posOffset;
-            sequence.Append(target.DOMoveY(target.transform.localPosition.y + amplitude, frequency));
-            sequence.Append(target.DOMoveY(animationPositionOffset.y, frequency));
+            sequence.Append(target.DOMoveY(target.position.y - amplitude, duration));
+            sequence.Append(target.DOMoveY(animationPositionOffset.y, duration));
+            sequence.SetEase(Ease.InOutSine);
 
+            sequence.SetLoops(-1);
 
             return sequence;
-            // tempPos.y += Mathf.Sin(Time.fixedTime * Mathf.PI * frequency) * amplitude;
-            // target.position = tempPos;
+        }
+        
+        public Sequence SetupMoveAnimation(Transform target, CanvasGroup canvasGroup, float distance, float fade, TweenCallback callback)
+        {
+            var sequence = DOTween.Sequence(target);
+            var startPosition = target.localPosition;
+            
+            sequence.SetTarget(target);
+            sequence.SetAutoKill();
+
+            var endPosition = startPosition;
+            endPosition.y += distance;
+            sequence.Append(target.DOLocalMove(endPosition, 0));
+
+            sequence.Append(target.DOLocalMoveY(startPosition.y, AnimationConstants.AnimationSpeed));
+            sequence.Insert(0f, canvasGroup.DOFade(fade, AnimationConstants.AnimationSpeed));
+            sequence.AppendCallback(callback);
+                
+            return sequence;
+        }
+        
+        public Sequence SetupShakeSequence(Transform target, float animationSpeed, float strength, int vibrato)
+        {
+            var sequence = DOTween.Sequence(target);
+            sequence.SetTarget(target);
+            sequence.SetAutoKill();
+
+            sequence.Append(target.DOShakePosition(animationSpeed, strength, vibrato));
+            return sequence;
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 }

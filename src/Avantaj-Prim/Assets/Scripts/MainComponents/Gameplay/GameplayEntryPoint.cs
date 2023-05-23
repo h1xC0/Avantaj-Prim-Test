@@ -1,3 +1,5 @@
+using GameState;
+using MainComponents.GameplayUI;
 using Services.Transitions;
 using Signals;
 using Systems.CommandSystem;
@@ -7,22 +9,19 @@ using Zenject;
 
 namespace MainComponents.Gameplay
 {
-    public class GameplayEntryPoint : MonoBehaviour, IGameplayEntryPoint
+    public class GameplayEntryPoint : MonoBehaviour
     {
         [SerializeField] private GameplayView gameplayView;
-        [SerializeField] private Transform viewSpawnPoint;
-        [SerializeField] private Canvas _canvas;
+        [SerializeField] private LevelStateView levelStateView;
+        [SerializeField] private LevelDataView levelDataView;
+        
+        [SerializeField] private Canvas canvas;
 
         [Inject]
         public void Construct(ICommandDispatcher commandDispatcher,
             ISceneTransitionService sceneTransitionService, DiContainer container)
         {
-            commandDispatcher.Dispatch<SetupGameplaySignal>(new SetupGameplayPayload(gameplayView, sceneTransitionService, viewSpawnPoint, _canvas, container));
-        }
-
-        public void Dispose()
-        {
-                   
+            commandDispatcher.Dispatch<SetupGameplaySignal>(new SetupGameplayPayload(gameplayView, levelStateView, levelDataView, canvas.transform, canvas, container));
         }
     }
 }

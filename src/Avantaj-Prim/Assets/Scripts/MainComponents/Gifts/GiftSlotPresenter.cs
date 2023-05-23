@@ -59,9 +59,11 @@ namespace MainComponents.Gifts
             if (_inputService.CurrentGiftPartDraggableItem is not GiftPartDraggablePresenter draggable) return;
             var isBox = draggable.GiftPart is BoxModel;
 
-            if (_generatedDraggableGift is null && !isBox) return;
+            if (_generatedDraggableGift is null && isBox == false) return;
 
             if (_generatedDraggableGift is null) SetupGiftView();
+            
+            if (isBox && _generatedDraggableGift.Gift.Box != null) return;
 
             var gift = _generatedDraggableGift?.Gift;
             gift.ApplyGiftPart(draggable.GiftPart);

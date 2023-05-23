@@ -5,7 +5,7 @@ namespace Services.PlayerProgression
 {
     public interface IPlayerProgressionService : IDisposable
     {
-        IReadOnlyReactiveProperty<int> ResourcesCount { get; }
+        IReadOnlyReactiveProperty<int> SoftCurrency { get; }
         IReadOnlyReactiveProperty<int> CurrentLevel { get; }
         IReadOnlyReactiveCollection<string> GiftSlots { get; }
         void AddResources(int amount);

@@ -1,4 +1,5 @@
 using BaseInfrastructure;
+using MainComponents.Customers;
 using MainComponents.DraggableItems;
 using MainComponents.Gifts;
 using MainComponents.Gifts.TrashBin;
@@ -13,6 +14,7 @@ namespace MainComponents.Gameplay
         DraggableItemContainerView[] BowContainers { get; }
         DraggableItemContainerView[] DesignContainers { get; }
         TrashBinView TrashBinView { get; }
+        CustomerSpawnPoint[] CustomerSpawnPoints { get; }
 
         void Construct(Canvas canvas);
         void Show();

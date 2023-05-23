@@ -1,11 +1,15 @@
 using BaseInfrastructure;
+using Constants;
+using MainComponents.Customers;
 using MainComponents.DraggableItems;
 using MainComponents.Gifts;
 using MainComponents.Gifts.TrashBin;
 using MainComponents.Level;
 using Services.AnimationService;
+using Services.EventBus;
 using Services.InputService;
 using Services.LevelConfigurationService;
+using Services.LevelProgressionService;
 using Services.PlayerProgression;
 using Services.ResourceProvider;
 using UnityEngine;
@@ -19,7 +23,12 @@ namespace MainComponents.Gameplay
         private readonly IAnimationService _animationService;
         private readonly ILevelConfigurationService _levelConfigurationService;
         private readonly IPlayerProgressionService _playerProgressionService;
+        private readonly ILevelProgressionService _levelProgressionService;
+        private readonly IEventBusService _eventBusService;
 
+        private ICustomerFactory _customerFactory;
+        private ICustomerDistributor _customerDistributor;
+        
         private Canvas _mainCanvas;
 
         public GameplayPresenter(
@@ -29,6 +38,8 @@ namespace MainComponents.Gameplay
             IAnimationService animationService,
             ILevelConfigurationService levelConfigurationService,
             IPlayerProgressionService playerProgressionService,
+            ILevelProgressionService levelProgressionService,
+            IEventBusService eventBusService,
             Canvas canvas) : base(viewContract)
         {
             _inputService = inputService;
@@ -36,6 +47,8 @@ namespace MainComponents.Gameplay
             _animationService = animationService;
             _levelConfigurationService = levelConfigurationService;
             _playerProgressionService = playerProgressionService;
+            _levelProgressionService = levelProgressionService;
+            _eventBusService = eventBusService;
 
             _mainCanvas = canvas;
         }
@@ -45,13 +58,16 @@ namespace MainComponents.Gameplay
             View.Construct(_mainCanvas);
             View.Hide();
 
+            ConstructCustomerFactory(levelConfiguration);
+            
             ConstructBoxVariants(levelConfiguration);
             ConstructBowVariants(levelConfiguration);
             ConstructsOrnamentVariants(levelConfiguration);
             ConstructGiftSlots();
             ConstructTrashBin();
-            
-            
+
+            CreateCustomersAtStart();
+
             View.Show();
         }
 
@@ -106,5 +122,36 @@ namespace MainComponents.Gameplay
                     _inputService, _playerProgressionService,_animationService,_resourceProviderService, giftSlotConfig, _mainCanvas));
             }
         }
+        
+        private void ConstructCustomerFactory(LevelConfiguration levelConfiguration)
+        {
+            _customerFactory = CreateCustomerFactory(levelConfiguration);
+            _customerDistributor = CreateCustomerDistributor();
+            
+            AddDisposable(_customerFactory);
+            AddDisposable(_customerDistributor);
+        }
+
+        private void CreateCustomersAtStart()
+        {
+            _customerDistributor.CreateCustomersAtStart(View.CustomerSpawnPoints.Length);
+        }
+
+        private ICustomerFactory CreateCustomerFactory(LevelConfiguration levelConfiguration) =>
+            new CustomerFactory(
+                _levelConfigurationService.GiftRecipes,
+                levelConfiguration,
+                _inputService,
+                _resourceProviderService,
+                _animationService,
+                View.CustomerSpawnPoints);
+
+        private ICustomerDistributor CreateCustomerDistributor() =>
+            new CustomerDistributor(
+                _customerFactory, 
+                _levelProgressionService, 
+                _playerProgressionService,
+                _eventBusService,
+                _levelConfigurationService.Rewards);
     }
 }

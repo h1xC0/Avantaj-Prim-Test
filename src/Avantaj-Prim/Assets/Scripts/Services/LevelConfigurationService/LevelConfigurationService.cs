@@ -55,8 +55,7 @@ namespace Services.LevelConfigurationService
                 .LoadResource<GiftRecipes>(ResourceNames.GiftRecipes);
 
             _rewards = _resourcesProvider
-                .LoadResources<Rewards>(ResourceNames.Rewards)
-                .FirstOrDefault();
+                .LoadResource<Rewards>(ResourceNames.Rewards);
 
             _giftSlots = _resourcesProvider
                 .LoadResources<GiftSlot>(ResourceNames.GiftSlots)
@@ -64,7 +63,7 @@ namespace Services.LevelConfigurationService
 
             if (_giftSlots != null && _rewards != null && _giftRecipes != null)
             {
-                throw new NullReferenceException("Resources wasn't load!");
+                Debug.LogError("Some resources wasn't load!");
             }
             
             return true;

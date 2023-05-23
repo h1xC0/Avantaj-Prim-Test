@@ -8,7 +8,7 @@ namespace Services.PlayerProgression
 {
     public class PlayerProgressionService : IPlayerProgressionService
     {
-        public IReadOnlyReactiveProperty<int> ResourcesCount => _resourcesCount;
+        public IReadOnlyReactiveProperty<int> SoftCurrency => _resourcesCount;
         public IReadOnlyReactiveProperty<int> CurrentLevel => _lastLevelIndex;
         public IReadOnlyReactiveCollection<string> GiftSlots => _giftSlots;
 
@@ -34,7 +34,7 @@ namespace Services.PlayerProgression
             _lastLevelIndex = new ReactiveProperty<int>(playerState.LastLevelIndex);
             _giftSlots = new ReactiveCollection<string>(playerState.GiftSlots);
 
-            ResourcesCount
+            SoftCurrency
                 .Subscribe(_ => SaveProgress())
                 .AddTo(_compositeDisposable);
 

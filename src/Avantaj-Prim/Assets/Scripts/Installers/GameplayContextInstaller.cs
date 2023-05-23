@@ -2,6 +2,7 @@ using Commands;
 using Services.AnimationService;
 using Services.InputService;
 using Services.LevelConfigurationService;
+using Services.LevelProgressionService;
 using Services.PlayerProgression;
 using Services.PresenterProvider;
 using Signals;
@@ -33,8 +34,11 @@ namespace Installers
             commandBinder.Bind<SetupGameplaySignal>()
                 .To<SetupGameplayCommand>();
             
+            commandBinder.Bind<EndLevelSignal>()
+                .To<CreateLevelEndViewCommand>();
             
             commandBinder.Bind<LoadNextLevelSignal>()
+                .To<DisposeLevelStateCommand>()
                 .To<UnloadSceneCommand>()
                 .To<LoadSceneCommand>();
         }
@@ -52,12 +56,17 @@ namespace Installers
                 .AsSingle();
 
             Container
-                .BindInterfacesTo<PresenterProviderService>()
+                .BindInterfacesTo<PresenterContainerService>()
                 .FromNew()
                 .AsSingle();
 
             Container
                 .BindInterfacesTo<PlayerProgressionService>()
+                .FromNew()
+                .AsSingle();
+
+            Container
+                .BindInterfacesTo<LevelProgressionService>()
                 .FromNew()
                 .AsSingle();
         }

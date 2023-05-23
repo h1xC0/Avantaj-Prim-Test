@@ -38,7 +38,7 @@ namespace MainComponents.Gifts
         public void SetAvailability(bool state, int price)
         {
             slotImage.raycastTarget = state;
-            slotImage.sprite = constantGameResources.SlotSprites.GetGiftSlotSprite(state);
+            slotImage.sprite = constantGameResources.GetGiftSlotSprite(state);
             
             buySlotButton.gameObject.SetActive(state == false);
             priceText.text = $"{price}<sprite=0>";

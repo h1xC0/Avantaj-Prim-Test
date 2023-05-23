@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GiftParts:
   - {fileID: 11400000, guid: 1e3da48ab0f4c89458f28134f130f719, type: 2}
-  - {fileID: 11400000, guid: 8708c05b746dd9c4e9ca35d340d5e439, type: 2}
-  Result: {fileID: 21300000, guid: 2664b0c0fb26f5149882c180ae0d0a98, type: 3}
+  - {fileID: 11400000, guid: fe8d0f3123261f841b4862f59e3b8a00, type: 2}
+  Result: {fileID: 21300000, guid: 88bbcdf3a25f3864bbb834d42e1c1fbd, type: 3}
