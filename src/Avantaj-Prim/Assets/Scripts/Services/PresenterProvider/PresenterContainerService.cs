@@ -1,20 +1,14 @@
 using System;
 using System.Collections.Generic;
-using BaseInfrastructure;
-using GameState;
-using MainComponents.Gameplay;
-using UnityEditor.IMGUI.Controls;
 
 namespace Services.PresenterProvider
 {
     public class PresenterContainerService : IPresenterContainerService
     {
-        private Dictionary<Type, object> _presenterContainer;
+        private Dictionary<Type, object> _presenterContainer = new Dictionary<Type, object>();
 
         public void BindPresenter<TPresenter>(TPresenter presenter) where TPresenter : class, IDisposable
         {
-            _presenterContainer ??= new Dictionary<Type, object>();
-            
             var key = presenter.GetType();
             
             if (KeyExist(key) == false) 
@@ -29,7 +23,7 @@ namespace Services.PresenterProvider
 
         public void Dispose()
         {
-            
+            _presenterContainer.Clear();
         }
     }
 }

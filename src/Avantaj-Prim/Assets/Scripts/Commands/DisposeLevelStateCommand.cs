@@ -1,4 +1,5 @@
 using GameState;
+using MainComponents.Gameplay;
 using MainComponents.GameplayUI;
 using Services.PresenterProvider;
 using Systems.CommandSystem;
@@ -19,9 +20,7 @@ namespace Commands
         {
             Retain();
             
-            _presenterContainerService.Resolve<LevelStatePresenter>().Dispose();
-            _presenterContainerService.Resolve<LevelDataPresenter>().Dispose();
-            _presenterContainerService.Resolve<LevelStatePresenter>().Dispose();
+            _presenterContainerService.Dispose();
             
             Release();
         }

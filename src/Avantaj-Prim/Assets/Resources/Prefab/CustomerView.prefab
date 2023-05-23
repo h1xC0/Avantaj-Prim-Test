@@ -1033,8 +1033,8 @@ MonoBehaviour:
   unsatisfiedLimit: 0.2
   timerFront: {fileID: 463504254942153071}
   timerBack: {fileID: 463504255510249859}
-  normalColor: {r: 0.02353454, g: 0.5849056, b: 0, a: 1}
-  lateColor: {r: 0.6603774, g: 0, b: 0, a: 1}
+  normalColor: {r: 0.03950864, g: 0.9811321, b: 0, a: 1}
+  lateColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &463504255943289185
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,12 +3,16 @@ using Services.LevelConfigurationService;
 using Services.PlayerProgression;
 using Signals;
 using Systems.CommandSystem;
+using Systems.CommandSystem.Payloads;
 using UniRx;
 
 namespace Services.LevelProgressionService
 {
     public class LevelProgressionService : ILevelProgressionService
     {
+        public bool LevelEnd => _levelEnded;
+        private bool _levelEnded;
+        
         public IReadOnlyReactiveProperty<int> CustomersCount => _customersCount;
         public IReadOnlyReactiveProperty<TimeSpan> CurrentTime => _currentTime;
 
@@ -34,9 +38,14 @@ namespace Services.LevelProgressionService
             _currentTime = new ReactiveProperty<TimeSpan>(TimeSpan.FromSeconds(_currentTimerValue));
 
             Observable.Timer(TimeSpan.FromSeconds(1f))
-                .Repeat()
+                .RepeatSafe()
                 .Subscribe(_ => UpdateTimer())
                 .AddTo(_compositeDisposable);
+        }
+
+        public void SetLevelEnded(bool flag)
+        {
+            _levelEnded = flag;
         }
 
         public void CompleteCustomerOrder()
@@ -63,16 +72,13 @@ namespace Services.LevelProgressionService
 
         private void CompleteLevel(bool levelComplete)
         {
-            _commandDispatcher.Dispatch<EndLevelSignal>(new EndLevelPayload(levelComplete));
+            _commandDispatcher.Dispatch<EndLevelSignal>(new EndLevelStatePayload(levelComplete, true));
             Dispose();
         }
 
         public void Dispose()
         {
-            _commandDispatcher?.Dispose();
-            _customersCount?.Dispose();
-            _currentTime?.Dispose();
-            _compositeDisposable?.Dispose();
+            _compositeDisposable.Dispose();
         }
     }
 }

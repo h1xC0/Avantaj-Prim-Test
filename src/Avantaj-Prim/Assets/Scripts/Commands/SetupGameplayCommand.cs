@@ -2,6 +2,7 @@ using BaseInfrastructure;
 using GameState;
 using MainComponents.Gameplay;
 using MainComponents.GameplayUI;
+using Services.AnimationService;
 using Services.LevelConfigurationService;
 using Services.PlayerProgression;
 using Services.PresenterProvider;
@@ -17,8 +18,9 @@ namespace Commands
         private readonly ISceneTransitionService _sceneTransitionService;
         private readonly ILevelConfigurationService _levelConfigurationService;
         private readonly IPlayerProgressionService _playerProgressionService;
+        private readonly IAnimationService _animationService;
 
-        public SetupGameplayCommand(IPresenterContainerService presenterContainerService, ISceneTransitionService sceneTransitionService, ILevelConfigurationService levelConfigurationService, IPlayerProgressionService playerProgressionService)
+        public SetupGameplayCommand(IAnimationService animationService, IPresenterContainerService presenterContainerService, ISceneTransitionService sceneTransitionService, ILevelConfigurationService levelConfigurationService, IPlayerProgressionService playerProgressionService)
         {
             _presenterContainerService = presenterContainerService;
             _sceneTransitionService = sceneTransitionService;
@@ -45,7 +47,10 @@ namespace Commands
             _presenterContainerService.BindPresenter(levelStatePresenter);
             _presenterContainerService.BindPresenter(levelDataPresenter);
 
-            _presenterContainerService.Resolve<GameplayPresenter>().ConstructGameplay(_levelConfigurationService.GetLevelConfiguration(_playerProgressionService.CurrentLevel.Value));
+            var levelConfig =
+                _levelConfigurationService.GetLevelConfiguration(_playerProgressionService.CurrentLevel.Value);
+            
+            _presenterContainerService.Resolve<GameplayPresenter>().ConstructGameplay(levelConfig);
             
             _presenterContainerService.Resolve<LevelDataPresenter>().Construct();
 

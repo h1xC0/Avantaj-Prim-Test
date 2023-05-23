@@ -144,6 +144,7 @@ namespace MainComponents.Gameplay
                 _inputService,
                 _resourceProviderService,
                 _animationService,
+                _eventBusService,
                 View.CustomerSpawnPoints);
 
         private ICustomerDistributor CreateCustomerDistributor() =>

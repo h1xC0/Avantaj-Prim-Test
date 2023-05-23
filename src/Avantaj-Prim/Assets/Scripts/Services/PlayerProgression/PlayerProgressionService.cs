@@ -63,13 +63,12 @@ namespace Services.PlayerProgression
 
         public void IncreaseLevelIndex()
         {
+            _lastLevelIndex.Value += 1;
+
             if (_lastLevelIndex.Value > _levelConfigurationService.TotalLevels)
             {
                 _lastLevelIndex.Value = 1;
-                return;
             }
-
-            _lastLevelIndex.Value += 1;
         }
 
         public void BuyGiftSlots(string id)
@@ -88,12 +87,7 @@ namespace Services.PlayerProgression
 
         public void Dispose()
         {
-            _resourcesCount?.Dispose();
-            _lastLevelIndex?.Dispose();
-            _giftSlots?.Dispose();
             _compositeDisposable?.Dispose();
-            _saveLoadService?.Dispose();
-            _levelConfigurationService?.Dispose();
         }
     }
 }

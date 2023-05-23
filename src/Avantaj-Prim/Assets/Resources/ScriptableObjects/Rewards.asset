@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe81d47d6f3d4838af55d2e51d4b6123, type: 3}
   m_Name: Rewards
   m_EditorClassIdentifier: 
-  RewardsList:
+  rewardsList:
   - Reward: 15
     Orders: 1
   - Reward: 40

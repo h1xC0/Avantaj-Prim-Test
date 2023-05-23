@@ -1,5 +1,6 @@
 using BaseInfrastructure;
 using Constants;
+using Services.AnimationService;
 using Services.PlayerProgression;
 using Signals;
 using Systems.CommandSystem;
@@ -14,14 +15,18 @@ namespace GameState
 
         public LoseStatePresenter(
             ILevelEndView viewContract,
-            ICommandDispatcher commandDispatcher) 
-            : base(viewContract)
+            ICommandDispatcher commandDispatcher, 
+            IAnimationService animationService) : base(viewContract)
         {
             _commandDispatcher = commandDispatcher;
+
+            View.Construct(animationService);
 
             View.OnNextLevelButtonPressed
                 .Subscribe(RestartLevel)
                 .AddTo(CompositeDisposable);
+
+            View.AnimateEnter();
         }
 
         private void RestartLevel(Unit args)

@@ -1,5 +1,6 @@
 using BaseInfrastructure;
 using Constants;
+using Services.AnimationService;
 using Services.PlayerProgression;
 using Signals;
 using Systems.CommandSystem;
@@ -16,15 +17,19 @@ namespace GameState
         public WinStatePresenter(
             ILevelEndView viewContract,
             ICommandDispatcher commandDispatcher,
-            IPlayerProgressionService playerProgressionService) 
-            : base(viewContract)
+            IPlayerProgressionService playerProgressionService,
+            IAnimationService animationService) : base(viewContract)
         {
             _commandDispatcher = commandDispatcher;
             _playerProgressionService = playerProgressionService;
 
+            View.Construct(animationService);
+
             View.OnNextLevelButtonPressed
                 .Subscribe(LoadNextLevel)
                 .AddTo(CompositeDisposable);
+            
+            View.AnimateEnter();
         }
 
         private void LoadNextLevel(Unit args)

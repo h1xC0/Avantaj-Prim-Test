@@ -2,11 +2,13 @@ namespace Systems.CommandSystem.Payloads
 {
     public class EndLevelStatePayload : ICommandPayload
     {
-        public bool LevelEnd;
+        public bool LevelState;
+        public bool LevelEnded;
 
-        public EndLevelStatePayload(bool levelEnd)
+        public EndLevelStatePayload(bool levelState, bool levelEnded)
         {
-            LevelEnd = levelEnd;
+            LevelState = levelState;
+            LevelEnded = levelEnded;
         }
     }
 }

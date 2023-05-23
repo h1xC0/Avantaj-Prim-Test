@@ -5,6 +5,7 @@ using MainComponents.Customers.Orders;
 using MainComponents.Gifts.Models;
 using MainComponents.Level;
 using Services.AnimationService;
+using Services.EventBus;
 using Services.InputService;
 using Services.ResourceProvider;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace MainComponents.Customers
         private readonly IInputService _inputService;
         private readonly IResourceProviderService _resourceProviderService;
         private readonly IAnimationService _animationService;
+        private readonly IEventBusService _eventBusService;
         private readonly CustomerSpawnPoint[] _spawnPoints;
 
         public CustomerFactory(
@@ -26,6 +28,7 @@ namespace MainComponents.Customers
             IInputService inputService,
             IResourceProviderService resourceProviderService,
             IAnimationService animationService,
+            IEventBusService eventBusService,
             CustomerSpawnPoint[] spawnPoints)
         {
             _giftRecipes = giftRecipes;
@@ -33,6 +36,7 @@ namespace MainComponents.Customers
             _inputService = inputService;
             _resourceProviderService = resourceProviderService;
             _animationService = animationService;
+            _eventBusService = eventBusService;
             _spawnPoints = spawnPoints;
         }
 
@@ -54,8 +58,8 @@ namespace MainComponents.Customers
                 return null;
             }
 
-            var customer = new Customer(customerOrder, _levelConfiguration.OrderWaitingTime);
-            return new CustomerPresenter(customerView, _inputService, _giftRecipes, customer, spawnPoint);
+            var customer = new CustomerModel(customerOrder, _levelConfiguration.OrderWaitingTime);
+            return new CustomerPresenter(customerView, _inputService, _eventBusService, _giftRecipes, customer, spawnPoint);
         }
 
         private CustomerSpawnPoint GetEmptySpawnPoint()

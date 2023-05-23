@@ -1,4 +1,5 @@
 using BaseInfrastructure;
+using MainComponents.GameState;
 
 namespace GameState
 {

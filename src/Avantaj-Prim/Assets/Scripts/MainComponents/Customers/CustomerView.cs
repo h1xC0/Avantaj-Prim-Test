@@ -1,3 +1,4 @@
+using System;
 using BaseInfrastructure;
 using Constants;
 using DG.Tweening;
@@ -46,10 +47,14 @@ namespace MainComponents.Customers
             _randomCustomer = constantGameResources.GetRandomCustomer();
             customerImage.sprite = _randomCustomer.satisfiedCustomer;
             customerImage.SetNativeSize();
+            
+            orderView.Construct(animationService);
         }
 
         public void SetTimer(float value)
         {
+            if (timerFront == null) return;
+            
             timerFront.fillAmount = value;
             var timerColor = Color.Lerp(normalColor, lateColor, 1 - value);
             timerFront.color = timerColor;
@@ -69,24 +74,20 @@ namespace MainComponents.Customers
             showAnimation.Play();
         }
 
-        public void HideCustomerAnimation(TweenCallback callback)
+        public void HideCustomerAnimation(TweenCallback tweenCallback)
         {
             _idleAnimation.Kill();
 
             var hideAnimation = _animationService.SetupMoveAnimation(transform, _canvasGroup,
-                AnimationConstants.CustomerAnimationPositionOffset, 0f, callback);
+                AnimationConstants.CustomerAnimationPositionOffset, 0f, tweenCallback);
             hideAnimation.Play();
+
         }
 
         private void RunFloatingAnimation()
         {
             _idleAnimation = _animationService.SetupFloatingAnimation(transform, amplitude, duration);
             _idleAnimation.Play();
-        }
-
-        public void Dispose()
-        {
-            _animationService?.Dispose();
         }
     }
 }

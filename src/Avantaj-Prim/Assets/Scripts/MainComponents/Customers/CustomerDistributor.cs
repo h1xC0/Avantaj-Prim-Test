@@ -3,6 +3,7 @@ using Constants;
 using Services.EventBus;
 using Services.LevelProgressionService;
 using Services.PlayerProgression;
+using UnityEngine;
 
 namespace MainComponents.Customers
 {
@@ -28,7 +29,6 @@ namespace MainComponents.Customers
             _eventBusService = eventBusService;
             _rewardList = rewardList;
             
-            eventBusService.Subscribe(this);
         }
 
         public void CreateCustomersAtStart(int count)
@@ -37,18 +37,19 @@ namespace MainComponents.Customers
                 CreateNextCustomer();
         }
 
-        private void TrackServedCustomer(CustomerPresenter customer, int ordersCount)
+        public void FulfillCustomer(CustomerPresenter customer, int ordersCount)
         {
             _levelProgressionService.CompleteCustomerOrder();
             _playerProgressionService.AddResources(_rewardList.GetRewardByOrderCount(ordersCount));
             RemoveCustomer(customer);
         }
 
-        private void RemoveCustomer(CustomerPresenter customer)
+        public void RemoveCustomer(CustomerPresenter customer)
         {
-            UnsubscribeFromCustomerEvents(customer);
             _customers.Remove(customer);
-            CreateNextCustomer();
+            
+            if(_levelProgressionService.LevelEnd == false)
+                CreateNextCustomer();
         }
 
         private void CreateNextCustomer()
@@ -61,26 +62,25 @@ namespace MainComponents.Customers
             SubscribeOnCustomerEvents(customer);
             _customers.Add(customer);
         }
-
+        
         private void SubscribeOnCustomerEvents(CustomerPresenter customer)
         {
-            customer.OnCustomerOrderComplete += TrackServedCustomer;
+            customer.OnCustomerOrderComplete += FulfillCustomer;
             customer.OnCustomerTimeLeft += RemoveCustomer;
         }
         
         private void UnsubscribeFromCustomerEvents(CustomerPresenter customer)
         {
-            customer.OnCustomerOrderComplete -= TrackServedCustomer;
+            customer.OnCustomerOrderComplete -= FulfillCustomer;
             customer.OnCustomerTimeLeft -= RemoveCustomer;
         }
-        
+
         public void Dispose()
         {
+            _customers.Clear();
+            
             foreach (var customer in _customers)
                 UnsubscribeFromCustomerEvents(customer);
-            
-            _customers.Clear();
         }
-
     }
 }

@@ -2,6 +2,7 @@ using System;
 using BaseInfrastructure;
 using MainComponents.Customers.Orders;
 using MainComponents.Gifts.Models;
+using Services.EventBus;
 using Services.InputService;
 using UniRx;
 using UnityEngine;
@@ -10,10 +11,11 @@ namespace MainComponents.Customers
 {
     public class CustomerPresenter : BasePresenter<ICustomerView>
     {
-        public event Action<CustomerPresenter, int> OnCustomerOrderComplete;
+        public event Action<CustomerPresenter, int> OnCustomerOrderComplete; 
         public event Action<CustomerPresenter> OnCustomerTimeLeft; 
 
-        private readonly Customer _customerModel;
+        private readonly IEventBusService _eventBusService;
+        private readonly CustomerModel _customerModel;
         private readonly CustomerSpawnPoint _spawnPoint;
         private readonly IDisposable _orderCompleteSubscription;
 
@@ -23,10 +25,12 @@ namespace MainComponents.Customers
         public CustomerPresenter(
             ICustomerView viewContract,
             IInputService inputService,
+            IEventBusService eventBusService,
             GiftRecipes giftRecipes,
-            Customer customerModel,
+            CustomerModel customerModel,
             CustomerSpawnPoint spawnPoint) : base(viewContract)
         {
+            _eventBusService = eventBusService;
             _customerModel = customerModel;
             _spawnPoint = spawnPoint;
 
@@ -42,7 +46,7 @@ namespace MainComponents.Customers
 
         private void UpdateTimer()
         {
-            if (_currentTimerValue <= 0)
+            if (_currentTimerValue <= 0 && View != null)
             {
                 OnTimeLeft();
                 return;
@@ -59,7 +63,8 @@ namespace MainComponents.Customers
         {
             _currentTimerValue = _customerModel.OrderWaitingTime;
             _timer = Observable.Timer(TimeSpan.FromSeconds(Time.fixedDeltaTime));
-            _timer.Repeat()
+            _timer
+                .RepeatSafe()
                 .Subscribe(_ => UpdateTimer())
                 .AddTo(CompositeDisposable);
         }
@@ -82,20 +87,20 @@ namespace MainComponents.Customers
         private void DisposeCustomer(Action action)
         {
             _orderCompleteSubscription?.Dispose();
-            RaiseSpawnPoint();
-            action?.Invoke();
+            EmptySpawnPoint();
+            action.Invoke();
 
             View.Dispose();
             Dispose();
         }
 
-        private void LogOrderComplete() => 
+        private void LogOrderComplete() =>
             OnCustomerOrderComplete?.Invoke(this, _customerModel.Order.OrderList.Count);
-        
-        private void LogTimeLeft() => 
-            OnCustomerTimeLeft?.Invoke(this);
+            
+            private void LogTimeLeft() => 
+                OnCustomerTimeLeft?.Invoke(this);
 
-        private void RaiseSpawnPoint()
+        private void EmptySpawnPoint()
         {
             _spawnPoint.SetEmptyState(true);
         }

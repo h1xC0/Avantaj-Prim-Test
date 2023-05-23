@@ -33,10 +33,10 @@ namespace Installers
             
             commandBinder.Bind<SetupGameplaySignal>()
                 .To<SetupGameplayCommand>();
-            
+
             commandBinder.Bind<EndLevelSignal>()
                 .To<CreateLevelEndViewCommand>();
-            
+
             commandBinder.Bind<LoadNextLevelSignal>()
                 .To<DisposeLevelStateCommand>()
                 .To<UnloadSceneCommand>()

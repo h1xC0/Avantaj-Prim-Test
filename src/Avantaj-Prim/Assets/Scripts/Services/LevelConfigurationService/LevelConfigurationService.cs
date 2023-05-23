@@ -17,6 +17,8 @@ namespace Services.LevelConfigurationService
         public Rewards Rewards => _rewards;
         
         private List<LevelConfiguration> _levelConfigurations = new();
+
+        private bool _levelEnded;
         
         private GiftRecipes _giftRecipes;
         private Rewards _rewards;
@@ -55,13 +57,14 @@ namespace Services.LevelConfigurationService
                 .LoadResource<GiftRecipes>(ResourceNames.GiftRecipes);
 
             _rewards = _resourcesProvider
-                .LoadResource<Rewards>(ResourceNames.Rewards);
+                .LoadResources<Rewards>(ResourceNames.Rewards)
+                .FirstOrDefault();
 
             _giftSlots = _resourcesProvider
                 .LoadResources<GiftSlot>(ResourceNames.GiftSlots)
                 .ToArray();
 
-            if (_giftSlots != null && _rewards != null && _giftRecipes != null)
+            if (_giftSlots == null || _rewards == null || _giftRecipes == null)
             {
                 Debug.LogError("Some resources wasn't load!");
             }

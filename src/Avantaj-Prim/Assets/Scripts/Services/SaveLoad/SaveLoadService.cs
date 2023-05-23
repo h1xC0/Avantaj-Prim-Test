@@ -31,9 +31,9 @@ namespace Services.SaveLoad
             
             if (System.IO.File.Exists(SaveNames.FilePath) == false || string.IsNullOrEmpty(System.IO.File.ReadAllText(SaveNames.FilePath)))
             {
-                System.IO.File.CreateText(SaveNames.FilePath);
+                // System.IO.File.CreateText(SaveNames.FilePath);
+                Save(playerProgression);
             }
-            // Save(playerProgression);
 
             var file = System.IO.File.ReadAllText(SaveNames.FilePath);
             playerProgression = JsonUtility.FromJson<PlayerProgressionModel>(file);

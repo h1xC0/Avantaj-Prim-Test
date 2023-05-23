@@ -1,6 +1,7 @@
 using GameState;
 using MainComponents.Customers;
 using MainComponents.DraggableItems;
+using MainComponents.GameState;
 using MainComponents.Gifts.Models;
 using MainComponents.Level;
 

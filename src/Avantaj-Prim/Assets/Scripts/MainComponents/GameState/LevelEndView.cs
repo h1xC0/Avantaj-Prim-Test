@@ -2,12 +2,13 @@ using System;
 using BaseInfrastructure;
 using Constants;
 using DG.Tweening;
+using GameState;
 using Services.AnimationService;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameState
+namespace MainComponents.GameState
 {
     public class LevelEndView : BaseView, ILevelEndView
     {

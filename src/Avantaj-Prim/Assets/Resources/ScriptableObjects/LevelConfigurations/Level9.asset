@@ -10,17 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7c6ad8ceca54606a4828e296c955053, type: 3}
-  m_Name: Level1
+  m_Name: Level9
   m_EditorClassIdentifier: 
-  LevelNumber: 1
-  CustomersCount: 3
-  Difficulty: 1
-  OrderWaitingTime: 25
+  LevelNumber: 3
+  CustomersCount: 30
+  Difficulty: 3
+  OrderWaitingTime: 70
   AvailableBoxes:
   - {fileID: 11400000, guid: 1e3da48ab0f4c89458f28134f130f719, type: 2}
+  - {fileID: 11400000, guid: 03c56920204d4844cb3da58084a9693f, type: 2}
   - {fileID: 11400000, guid: e2b86e478e1e5054c919210f3bb9e2fe, type: 2}
   AvailableBows:
+  - {fileID: 11400000, guid: 7b12c2761861f704d978c7c44297ad88, type: 2}
+  - {fileID: 11400000, guid: 67f5cbd37b0527944b1f117f7e73388c, type: 2}
   - {fileID: 11400000, guid: 09b16883e2f97c7489ffacdf077f5fa6, type: 2}
   AvailableOrnaments:
   - {fileID: 11400000, guid: 4007b9864c837404c9d8593e53e79fbd, type: 2}
   - {fileID: 11400000, guid: fe8d0f3123261f841b4862f59e3b8a00, type: 2}
+  - {fileID: 11400000, guid: 8708c05b746dd9c4e9ca35d340d5e439, type: 2}
